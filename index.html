@@ -581,27 +581,8 @@
     }
   </style>
 </head>
+  
 <body>
-  <!-- パスワード入力画面 -->
-  <div class="password-screen" id="passwordScreen">
-    <div class="password-container">
-      <h2 class="password-title">パスワード入力</h2>
-      <p class="password-subtitle">サイトにアクセスするにはパスワードを入力してください</p>
-      <input 
-        type="password" 
-        class="password-input" 
-        id="passwordInput" 
-        placeholder="パスワードを入力..."
-        onkeypress="handlePasswordKeyPress(event)"
-      >
-      <button class="password-button" onclick="checkPassword()">
-        アクセス
-      </button>
-      <div class="password-error" id="passwordError">
-        パスワードが正しくありません。
-      </div>
-    </div>
-  </div>
 
   <!-- ローディング画面 -->
   <div class="loading-screen hidden" id="loadingScreen">
