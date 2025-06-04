@@ -12,7 +12,6 @@
       box-sizing: border-box;
     }
 
-    
     /* ローディング画面 */
     .loading-screen {
       position: fixed;
@@ -538,10 +537,6 @@
 
     /* レスポンシブ対応 */
     @media (max-width: 768px) {
-      .password-container {
-        padding: 2rem 1.5rem;
-      }
-
       header {
         padding: 3rem 1rem 6rem 1rem;
         clip-path: ellipse(100% 80% at 50% 0%);
@@ -581,11 +576,9 @@
     }
   </style>
 </head>
-  
 <body>
-
   <!-- ローディング画面 -->
-  <div class="loading-screen hidden" id="loadingScreen">
+  <div class="loading-screen" id="loadingScreen">
     <div class="loading-icon-container">
       <img src="./photo/icon.jpeg" alt="möln logo" class="loading-icon">
       <div class="loading-spinner-ring"></div>
@@ -700,8 +693,8 @@
             サークル紹介ページ
             <span class="arrow">→</span>
           </a>
-          <a class="link-button" href="https://dbu-molkky.github.io/ob-homepage/" target="_blank">
-            モルックサークル「möln」OB会
+          <a class="link-button" href="https://dbu-molkky.github.io/homepage/" target="_blank">
+            モルックサークル「möln」
             <span class="arrow">→</span>
           </a>
         </div>
@@ -714,17 +707,16 @@
   </div>
 
   <script>
-    // ローディング画面の制御
+    // ページ読み込み完了時の処理
     window.addEventListener('load', function() {
-      const loadingScreen = document.getElementById('loadingScreen');
-      
-      // 3秒間はローディング画面を表示
-      setTimeout(function() {
-        loadingScreen.classList.add('hidden');
+      // 3秒後にローディング画面を非表示にしてメインコンテンツを表示
+      setTimeout(() => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('mainContainer').classList.add('visible');
         
         // ローディング画面が完全に消えたら要素を削除
-        setTimeout(function() {
-          loadingScreen.remove();
+        setTimeout(() => {
+          document.getElementById('loadingScreen').remove();
         }, 500);
       }, 3000);
     });
