@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>モルックサークル「möln」OB会</title>
+  <title>モルックサークル「möln」</title>
   <link rel="icon" type="image/png" href="photo/photo_icon.jpeg" />
   <style>
     * {
@@ -13,756 +12,821 @@
       box-sizing: border-box;
     }
 
-```
-/* パスワード認証画面 */
-.auth-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.auth-screen.hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.auth-container {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  padding: 3rem;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-}
-
-.auth-title {
-  color: #0D47A1;
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.auth-subtitle {
-  color: #666;
-  font-size: 1rem;
-  margin-bottom: 2rem;
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.auth-input {
-  padding: 1rem;
-  border: 2px solid #E3F2FD;
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-  background: rgba(255, 255, 255, 0.9);
-}
-
-.auth-input:focus {
-  outline: none;
-  border-color: #1976D2;
-}
-
-.auth-button {
-  padding: 1rem 2rem;
-  background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.auth-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.4);
-}
-
-.auth-error {
-  color: #f44336;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-  display: none;
-}
-
-/* ローディング画面 */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.loading-screen.hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.loading-icon-container {
-  position: relative;
-  margin-bottom: 2rem;
-  animation: iconFloat 2s ease-in-out infinite alternate;
-}
-
-.loading-icon {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-  animation: iconPulse 2s ease-in-out infinite;
-}
-
-@keyframes iconFloat {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-10px); }
-}
-
-@keyframes iconPulse {
-  0%, 100% { 
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-  50% { 
-    box-shadow: 0 0 50px rgba(255, 255, 255, 0.6);
-    border-color: rgba(255, 255, 255, 0.6);
-  }
-}
-
-.loading-spinner-ring {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 140px;
-  height: 140px;
-  border: 3px solid transparent;
-  border-top: 3px solid white;
-  border-right: 3px solid rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
-  animation: spin 2s linear infinite;
-}
-
-.loading-spinner-ring::after {
-  content: '';
-  position: absolute;
-  top: -6px;
-  left: -6px;
-  width: 140px;
-  height: 140px;
-  border: 2px solid transparent;
-  border-top: 2px solid rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
-  animation: spin 3s linear infinite reverse;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.loading-logo {
-  color: white;
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  opacity: 0;
-  animation: logoFadeIn 1s ease-in-out 0.5s forwards;
-}
-
-@keyframes logoFadeIn {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  line-height: 1.7;
-  color: #333;
-  background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
-  min-height: 100vh;
-}
-
-.main-container {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  min-height: 100vh;
-  display: none;
-}
-
-.main-container.visible {
-  display: block;
-}
-
-header {
-  background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
-  color: white;
-  padding: 5rem 2rem 8rem 2rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  clip-path: ellipse(100% 100% at 50% 0%);
-  margin-bottom: -3rem;
-  border-radius: 0 0 50% 50%;
-}
-
-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 70%, rgba(255,255,255,0.15) 0%, transparent 40%),
-    radial-gradient(circle at 70% 30%, rgba(255,255,255,0.15) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
-  animation: pulse 6s ease-in-out infinite alternate;
-}
-
-header::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08) 20%, transparent 20%),
-    radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 15%, transparent 15%),
-    radial-gradient(circle at 40% 90%, rgba(255,255,255,0.08) 25%, transparent 25%);
-  background-size: 100px 100px, 80px 80px, 120px 120px;
-  animation: floatCircles 20s infinite linear;
-}
-
-@keyframes floatCircles {
-  0% { 
-    background-position: 0 0, 0 0, 0 0;
-    transform: rotate(0deg);
-  }
-  100% { 
-    background-position: 100px 100px, -80px -80px, 120px -120px;
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulse {
-  0% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-
-header h1 {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  position: relative;
-  z-index: 2;
-}
-
-header p {
-  font-size: 1.3rem;
-  opacity: 0.95;
-  position: relative;
-  z-index: 2;
-  font-weight: 300;
-}
-
-.container {
-  padding: 6rem 2rem 3rem 2rem;
-  max-width: 1000px;
-  margin: auto;
-}
-
-section {
-  margin-bottom: 4rem;
-  background: white;
-  padding: 2.5rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-}
-
-h2 {
-  color: #0D47A1;
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
-  position: relative;
-  padding-left: 1rem;
-}
-
-h2::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, #1976D2, #0D47A1);
-  border-radius: 2px;
-}
-
-p {
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  color: #555;
-}
-
-ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-ul li {
-  position: relative;
-  padding: 0.8rem 0 0.8rem 2rem;
-  margin-bottom: 0.5rem;
-  background: rgba(25, 118, 210, 0.05);
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-ul li::before {
-  content: '✓';
-  position: absolute;
-  left: 0.7rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #1976D2;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-ul li:hover {
-  background: rgba(25, 118, 210, 0.1);
-  transform: translateX(5px);
-}
-
-.link-button {
-  display: block;
-  position: relative;
-  padding: 1rem 2rem;
-  margin-bottom: 0.8rem;
-  background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
-  color: white;
-  text-decoration: none;
-  border-radius: 15px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
-  overflow: hidden;
-  font-weight: 500;
-  text-align: left;
-}
-
-.link-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s;
-}
-
-.link-button:hover::before {
-  left: 100%;
-}
-
-.link-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.4);
-  color: white;
-}
-
-.link-button .arrow {
-  position: absolute;
-  right: 1.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
-  transition: transform 0.3s ease;
-}
-
-.link-button:hover .arrow {
-  transform: translateY(-50%) translateX(5px);
-}
-
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.gallery img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 15px;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.gallery img:hover {
-  transform: scale(1.05) rotate(1deg);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-}
-
-footer {
-  background: linear-gradient(135deg, #0D47A1 0%, #01579B 100%);
-  color: white;
-  text-align: center;
-  padding: 4rem 2rem 3rem 2rem;
-  margin-top: 4rem;
-  position: relative;
-  clip-path: ellipse(100% 100% at 50% 100%);
-  padding-top: 5rem;
-  border-radius: 50% 50% 0 0;
-  overflow: hidden;
-}
-
-footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 70%, rgba(255,255,255,0.15) 0%, transparent 40%),
-    radial-gradient(circle at 70% 30%, rgba(255,255,255,0.15) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
-  animation: pulse 6s ease-in-out infinite alternate;
-}
-
-footer::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08) 20%, transparent 20%),
-    radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 15%, transparent 15%),
-    radial-gradient(circle at 40% 90%, rgba(255,255,255,0.08) 25%, transparent 25%);
-  background-size: 100px 100px, 80px 80px, 120px 120px;
-  animation: floatCircles 20s infinite linear;
-}
-
-footer p {
-  position: relative;
-  z-index: 2;
-  color: white;
-}
-
-a {
-  color: #0D47A1;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-a::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -2px;
-  left: 0;
-  background: linear-gradient(90deg, #1976D2, #0D47A1);
-  transition: width 0.3s ease;
-}
-
-a:hover::after {
-  width: 100%;
-}
-
-a:hover {
-  color: #1976D2;
-}
-
-.spacer {
-  height: 2rem;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-section {
-  animation: fadeInUp 0.6s ease forwards;
-}
-
-@media (max-width: 768px) {
-  header {
-    padding: 3rem 1rem 6rem 1rem;
-    clip-path: ellipse(100% 80% at 50% 0%);
-    border-radius: 0 0 40% 40%;
-  }
-  
-  header h1 {
-    font-size: 1.8rem;
-  }
-  
-  header p {
-    font-size: 1.1rem;
-  }
-  
-  .container {
-    padding: 4rem 1rem 2rem 1rem;
-  }
-  
-  section {
-    padding: 2rem 1.5rem;
-  }
-  
-  .gallery {
-    grid-template-columns: 1fr;
-  }
-  
-  footer {
-    padding: 3rem 1rem 2rem 1rem;
-    clip-path: ellipse(100% 80% at 50% 100%);
-    border-radius: 40% 40% 0 0;
-    padding-top: 4rem;
-  }
-
-  .auth-container {
-    padding: 2rem;
-  }
-}
-```
-
+    /* パスワード入力画面 */
+    .password-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #2196F3 0%, #1565C0 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .password-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .password-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 3rem 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      text-align: center;
+      backdrop-filter: blur(10px);
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .password-title {
+      color: #1565C0;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .password-subtitle {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .password-input {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.3s ease;
+      outline: none;
+    }
+
+    .password-input:focus {
+      border-color: #2196F3;
+      box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+    }
+
+    .password-button {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #2196F3 0%, #1565C0 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .password-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+    }
+
+    .password-error {
+      color: #f44336;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    /* ローディング画面 */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #2196F3 0%, #1565C0 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loading-icon-container {
+      position: relative;
+      margin-bottom: 2rem;
+      animation: iconFloat 2s ease-in-out infinite alternate;
+    }
+
+    .loading-icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+      animation: iconPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes iconFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+
+    @keyframes iconPulse {
+      0%, 100% { 
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+      50% { 
+        box-shadow: 0 0 50px rgba(255, 255, 255, 0.6);
+        border-color: rgba(255, 255, 255, 0.6);
+      }
+    }
+
+    .loading-spinner-ring {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 140px;
+      height: 140px;
+      border: 3px solid transparent;
+      border-top: 3px solid white;
+      border-right: 3px solid rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: spin 2s linear infinite;
+    }
+
+    .loading-spinner-ring::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      width: 140px;
+      height: 140px;
+      border: 2px solid transparent;
+      border-top: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: spin 3s linear infinite reverse;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-logo {
+      color: white;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      opacity: 0;
+      animation: logoFadeIn 1s ease-in-out 0.5s forwards;
+    }
+
+    @keyframes logoFadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .loading-text {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 300;
+      opacity: 0;
+      animation: textFadeIn 1s ease-in-out 1s forwards, textPulse 2s ease-in-out 1s infinite;
+    }
+
+    @keyframes textFadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 0.9; }
+    }
+
+    @keyframes textPulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .loading-dots {
+      display: inline-block;
+      width: 80px;
+      text-align: left;
+    }
+
+    .loading-dots::after {
+      content: '';
+      animation: dots 2s infinite;
+    }
+
+    @keyframes dots {
+      0%, 20% { content: ''; }
+      40% { content: '.'; }
+      60% { content: '..'; }
+      80%, 100% { content: '...'; }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.7;
+      color: #333;
+      background: linear-gradient(135deg, #64B5F6 0%, #1976D2 100%);
+      min-height: 100vh;
+    }
+
+    .main-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      min-height: 100vh;
+      display: none;
+    }
+
+    .main-container.visible {
+      display: block;
+    }
+
+    header {
+      background: linear-gradient(135deg, #2196F3 0%, #1565C0 100%);
+      color: white;
+      padding: 5rem 2rem 8rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      clip-path: ellipse(100% 100% at 50% 0%);
+      margin-bottom: -3rem;
+      border-radius: 0 0 50% 50%;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 30% 70%, rgba(255,255,255,0.15) 0%, transparent 40%),
+        radial-gradient(circle at 70% 30%, rgba(255,255,255,0.15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
+      animation: pulse 6s ease-in-out infinite alternate;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08) 20%, transparent 20%),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 15%, transparent 15%),
+        radial-gradient(circle at 40% 90%, rgba(255,255,255,0.08) 25%, transparent 25%);
+      background-size: 100px 100px, 80px 80px, 120px 120px;
+      animation: floatCircles 20s infinite linear;
+    }
+
+    @keyframes floatCircles {
+      0% { 
+        background-position: 0 0, 0 0, 0 0;
+        transform: rotate(0deg);
+      }
+      100% { 
+        background-position: 100px 100px, -80px -80px, 120px -120px;
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    header h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 2;
+    }
+
+    header p {
+      font-size: 1.3rem;
+      opacity: 0.95;
+      position: relative;
+      z-index: 2;
+      font-weight: 300;
+    }
+
+    .container {
+      padding: 6rem 2rem 3rem 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    section {
+      margin-bottom: 4rem;
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: -200% 0; }
+      50% { background-position: 200% 0; }
+    }
+
+    section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    h2 {
+      color: #1565C0;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      position: relative;
+      padding-left: 1rem;
+    }
+
+    h2::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #2196F3, #1565C0);
+      border-radius: 2px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      color: #555;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    ul li {
+      position: relative;
+      padding: 0.8rem 0 0.8rem 2rem;
+      margin-bottom: 0.5rem;
+      background: rgba(33, 150, 243, 0.05);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0.7rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #2196F3;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    ul li:hover {
+      background: rgba(33, 150, 243, 0.1);
+      transform: translateX(5px);
+    }
+
+    /* リンクボタンスタイル */
+    .link-button {
+      display: block;
+      position: relative;
+      padding: 1rem 2rem;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(135deg, #2196F3 0%, #1565C0 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+      overflow: hidden;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    .link-button::after {
+      content: none;
+    }
+
+    .link-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .link-button:hover::before {
+      left: 100%;
+    }
+
+    .link-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+      color: white;
+    }
+
+    .link-button .arrow {
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .link-button:hover .arrow {
+      transform: translateY(-50%) translateX(5px);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05) rotate(1deg);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .score-link {
+      display: inline-block;
+      background: linear-gradient(135deg, #2196F3 0%, #1565C0 100%);
+      color: white;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .score-link:hover::before {
+      left: 100%;
+    }
+
+    .score-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+    }
+
+    .link-container {
+      text-align: right;
+      margin-top: 2rem;
+    }
+
+    footer {
+      background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
+      color: white;
+      text-align: center;
+      padding: 4rem 2rem 3rem 2rem;
+      margin-top: 4rem;
+      position: relative;
+      clip-path: ellipse(100% 100% at 50% 100%);
+      padding-top: 5rem;
+      border-radius: 50% 50% 0 0;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 30% 70%, rgba(255,255,255,0.15) 0%, transparent 40%),
+        radial-gradient(circle at 70% 30%, rgba(255,255,255,0.15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
+      animation: pulse 6s ease-in-out infinite alternate;
+    }
+
+    footer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08) 20%, transparent 20%),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 15%, transparent 15%),
+        radial-gradient(circle at 40% 90%, rgba(255,255,255,0.08) 25%, transparent 25%);
+      background-size: 100px 100px, 80px 80px, 120px 120px;
+      animation: floatCircles 20s infinite linear;
+    }
+
+    footer p {
+      position: relative;
+      z-index: 2;
+      color: white;
+    }
+
+    a {
+      color: #1565C0;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background: linear-gradient(90deg, #2196F3, #1565C0);
+      transition: width 0.3s ease;
+    }
+
+    a:hover::after {
+      width: 100%;
+    }
+
+    a:hover {
+      color: #2196F3;
+    }
+
+    .spacer {
+      height: 2rem;
+    }
+
+    /* スクロールアニメーション */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    section {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 768px) {
+      .password-container {
+        padding: 2rem 1.5rem;
+      }
+
+      header {
+        padding: 3rem 1rem 6rem 1rem;
+        clip-path: ellipse(100% 80% at 50% 0%);
+        border-radius: 0 0 40% 40%;
+      }
+      
+      header h1 {
+        font-size: 1.8rem;
+      }
+      
+      header p {
+        font-size: 1.1rem;
+      }
+      
+      .container {
+        padding: 4rem 1rem 2rem 1rem;
+      }
+      
+      section {
+        padding: 2rem 1.5rem;
+      }
+      
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+      
+      .link-container {
+        text-align: center;
+      }
+      
+      footer {
+        padding: 3rem 1rem 2rem 1rem;
+        clip-path: ellipse(100% 80% at 50% 100%);
+        border-radius: 40% 40% 0 0;
+        padding-top: 4rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- パスワード認証画面 -->
-  <div class="auth-screen" id="authScreen">
-    <div class="auth-container">
-      <h2 class="auth-title">OB会専用ページ</h2>
-      <p class="auth-subtitle">パスワードを入力してください</p>
-      <form class="auth-form" id="authForm">
-        <input type="password" class="auth-input" id="passwordInput" placeholder="パスワード" required>
-        <button type="submit" class="auth-button">ログイン</button>
-        <div class="auth-error" id="authError">パスワードが正しくありません</div>
-      </form>
+  <!-- パスワード入力画面 -->
+  <div class="password-screen" id="passwordScreen">
+    <div class="password-container">
+      <h2 class="password-title">パスワード入力</h2>
+      <p class="password-subtitle">サイトにアクセスするにはパスワードを入力してください</p>
+      <input 
+        type="password" 
+        class="password-input" 
+        id="passwordInput" 
+        placeholder="パスワードを入力..."
+        onkeypress="handlePasswordKeyPress(event)"
+      >
+      <button class="password-button" onclick="checkPassword()">
+        アクセス
+      </button>
+      <div class="password-error" id="passwordError">
+        パスワードが正しくありません。
+      </div>
     </div>
   </div>
 
   <!-- ローディング画面 -->
-
   <div class="loading-screen hidden" id="loadingScreen">
     <div class="loading-icon-container">
       <img src="./photo/icon.jpeg" alt="möln logo" class="loading-icon">
       <div class="loading-spinner-ring"></div>
     </div>
-    <div class="loading-logo">OB会へようこそ</div>
+    <div class="loading-logo">投げて笑って、mölnしよう｡</div>
   </div>
 
   <div class="main-container" id="mainContainer">
     <header>
-      <h1>モルックサークル「möln」OB会</h1>
-      <p>卒業してもつながり続ける、möln精神</p>
+      <h1>モルックサークル「möln」</h1>
+      <p>投げて笑って、mölnしよう。</p>
     </header>
 
-```
-<div class="container">
-  <section id="about">
-    <h2>OB会について</h2>
-    <p>
-      モルックサークル「möln」OB会は、卒業後もモルックの楽しさを共有し、
-      サークルの絆を大切にする卒業生の集まりです。現役生との交流や、
-      OB同士の親睦を深める活動を行っています。
-    </p>
-  </section>
+    <div class="container">
+      <section id="about">
+        <h2>サークル紹介</h2>
+        <p>
+          モルックサークル「möln」では、フィンランドのスポーツ「モルック」を行っています。
+          部員全員の仲が良く、常に和気あいあいとしているのも魅力の1つです。「運動はしたいけど激しいのは苦手だな…」そんな人にこそピッタリ！一緒にモルックを楽しみましょう！
+        </p>
+      </section>
 
-  <div class="spacer"></div>
+      <div class="spacer"></div>
 
-  <section id="activities">
-    <h2>OB会活動</h2>
-    <p>OB会では以下のような活動を行っています：</p>
-    <ul>
-      <li>年次総会・懇親会の開催</li>
-      <li>現役生との合同練習・指導</li>
-      <li>OB大会の企画・運営</li>
-      <li>卒業生同士の交流イベント</li>
-      <li>現役サークルへの支援活動</li>
-    </ul>
-  </section>
+      <section id="schedule">
+        <h2>活動について</h2>
+        <p>活動はとても自由。大学の空きコマや放課後の時間があるときに、できる人が集まって練習しています。大会や練習会などにも、順次参加しています。<br>主な練習場所は以下の通りです！</p>
+        <ul>
+          <li>板橋キャンパス 部室棟４階</li>
+          <li>東松山キャンパス近くの公園</li>
+        </ul>
+      </section>
 
-  <div class="spacer"></div>
+      <div class="spacer"></div>
 
-  <section id="news">
-    <h2>最新ニュース</h2>
-    <p>OB会の最新情報をお知らせします。</p>
-    <ul>
-      <li>2025年春季OB総会開催予定（4月予定）</li>
-      <li>現役生との合同練習会実施中</li>
-      <li>第3回OB大会開催決定</li>
-      <li>新卒業生歓迎会準備中</li>
-    </ul>
-  </section>
+      <section id="record">
+        <h2>大会・イベント参加実績</h2>
+        <p>モルックサークル「möln」は様々な大会やイベントに参加しています！</p>
+        <ul>
+          <li>第１回幕張海浜公園Team Kiitosカップ 〜チーム戦〜</li>
+          <li>第３回幕張海浜公園Team Kiitosカップ 〜チーム戦〜</li>
+          <li>関東大学モルック交流会 横川カップ</li>
+          <li>第100回大東祭</li>
+          <li>第７回幕張海浜公園Team Kiitosカップ 〜チーム戦〜</li>
+          <li>モルックビギナーズ大会 inちば</li>
+        </ul>
+      </section>
 
-  <div class="spacer"></div>
+      <div class="spacer"></div>
 
-  <section id="members">
-    <h2>会員登録・連絡先</h2>
-    <p>OB会への参加や連絡は以下の方法でお願いします：</p>
-    <ul>
-      <li>卒業年度と氏名を明記の上、下記連絡先へご連絡ください</li>
-      <li>年会費等の詳細については個別にご案内いたします</li>
-      <li>住所変更等の連絡もお忘れなく</li>
-    </ul>
-  </section>
+      <section id="gallery">
+        <h2>写真ギャラリー</h2>
+        <div class="gallery">
+          <img src="./photo/IMG_0001.jpeg" alt="photo01" />
+          <img src="./photo/IMG_0002.jpeg" alt="photo02" />
+          <img src="./photo/IMG_0003.jpeg" alt="photo_icon" />
+        </div>
+      </section>
 
-  <div class="spacer"></div>
+      <div class="spacer"></div>
 
-  <section id="gallery">
-    <h2>OB会活動写真</h2>
-    <div class="gallery">
-      <div style="width: 100%; height: 250px; background: linear-gradient(135deg, #E3F2FD, #BBDEFB); border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #0D47A1; font-size: 1.2rem; font-weight: 600;">OB総会の様子</div>
-      <div style="width: 100%; height: 250px; background: linear-gradient(135deg, #E8F5E8, #C8E6C9); border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #2E7D32; font-size: 1.2rem; font-weight: 600;">合同練習会</div>
-      <div style="width: 100%; height: 250px; background: linear-gradient(135deg, #FFF3E0, #FFCC02); border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #F57C00; font-size: 1.2rem; font-weight: 600;">懇親会</div>
+      <section id="score">
+        <h2>モルック得点計算</h2>
+        <p>モルックの練習中に便利な得点計算ツールはこちらからアクセスできます。</p>
+        <div class="link-container">
+          <a class="score-link" href="https://dbu-molkky.github.io/score/" target="_blank">得点計算ページへ</a>
+        </div>
+      </section>
+
+      <div class="spacer"></div>
+
+      <section id="form-comparison">
+        <h2>投擲フォーム比較</br>（β版）</h2>
+        <p>目標とするプロの動画と自身の投擲フォーム動画をアップロードすればAIベースの骨格検出モデルがプロと自分の投擲フォームの近似度を測定してくれます。<br>※このシステムは現在ベータ版です。</p>
+        <div class="link-container">
+          <a class="score-link" href="https://dbu-molkky.github.io/molkky-comparison/" target="_blank">投擲フォーム比較ページへ</a>
+        </div>
+      </section>
+
+      <div class="spacer"></div>
+
+      <section id="contact">
+        <h2>お問い合わせ・SNS</h2>
+        <p>ご質問・参加希望などは以下のSNSよりご連絡ください。</p>
+        <div>
+          <a class="link-button" href="https://instagram.com/dbu_molkky" target="_blank">
+            公式Instagramはこちら！
+            <span class="arrow">→</span>
+          </a>
+          <a class="link-button" href="https://twitter.com/dbu_molkky" target="_blank">
+            公式Xはこちら
+            <span class="arrow">→</span>
+          </a>
+          <a class="link-button" href="https://line.me/R/ti/p/@413roggq" target="_blank">
+            公式LINEはこちら！
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </section>
+
+      <div class="spacer"></div>
+
+      <section id="links">
+        <h2>関連リンク</h2>
+        <p>このサークルに関連するその他のリンクはこちらです。</p>
+        <div>
+          <a class="link-button" href="https://www.daito.ac.jp" target="_blank">
+            大東文化大学ホームページ
+            <span class="arrow">→</span>
+          </a>
+          <a class="link-button" href="https://www.daito.ac.jp/campuslife/club/culture/details_43238.html" target="_blank">
+            サークル紹介ページ
+            <span class="arrow">→</span>
+          </a>
+          <a class="link-button" href="https://dbu-molkky.github.io/ob-homepage/" target="_blank">
+            モルックサークル「möln」OB会
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </section>
     </div>
-  </section>
 
-  <div class="spacer"></div>
-
-  <section id="contact">
-    <h2>お問い合わせ</h2>
-    <p>OB会に関するお問い合わせは以下からお願いします。</p>
-    <div>
-      <a class="link-button" href="mailto:ob@example.com">
-        OB会事務局メール
-        <span class="arrow">→</span>
-      </a>
-      <a class="link-button" href="https://forms.gle/example" target="_blank">
-        入会申込フォーム
-        <span class="arrow">→</span>
-      </a>
-    </div>
-  </section>
-
-  <div class="spacer"></div>
-
-  <section id="links">
-    <h2>関連リンク</h2>
-    <p>関連するページへのリンクです。</p>
-    <div>
-      <a class="link-button" href="https://dbu-molkky.github.io/" target="_blank">
-        現役サークルホームページ
-        <span class="arrow">→</span>
-      </a>
-      <a class="link-button" href="https://www.daito.ac.jp" target="_blank">
-        大東文化大学ホームページ
-        <span class="arrow">→</span>
-      </a>
-    </div>
-  </section>
-</div>
-
-<footer>
-  <p>&copy; モルックサークル「möln」OB会</p>
-</footer>
-```
-
+    <footer>
+      <p>&copy; 大東文化大学公認サークル<br> モルックサークル「möln」</p>
+    </footer>
   </div>
 
   <script>
-    // パスワード認証
-    const PASSWORD = 'molnob2025'; // 実際の運用では、より安全な方法を使用することを推奨
-    
-    document.getElementById('authForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
+    // パスワード設定（実際の運用では、より安全な方法を使用してください）
+    const correctPassword = "daito-molkky";
+
+    // パスワードチェック関数
+    function checkPassword() {
       const inputPassword = document.getElementById('passwordInput').value;
-      const authError = document.getElementById('authError');
-      const authScreen = document.getElementById('authScreen');
-      const loadingScreen = document.getElementById('loadingScreen');
-      const mainContainer = document.getElementById('mainContainer');
+      const errorElement = document.getElementById('passwordError');
       
-      if (inputPassword === PASSWORD) {
+      if (inputPassword === correctPassword) {
         // パスワードが正しい場合
-        authScreen.classList.add('hidden');
-        loadingScreen.classList.remove('hidden');
-        
-        // ローディング画面を2秒表示後、メインコンテンツを表示
-        setTimeout(function() {
-          loadingScreen.classList.add('hidden');
-          mainContainer.classList.add('visible');
-          
-          // ローディング画面を完全に削除
-          setTimeout(function() {
-            loadingScreen.remove();
-            authScreen.remove();
-          }, 500);
-        }, 2000);
-        
-      } else {
-        // パスワードが間違っている場合
-        authError.style.display = 'block';
-        document.getElementById('passwordInput').value = '';
-        
-        // エラーメッセージを3秒後に非表示
-        setTimeout(function() {
-          authError.style.display = 'none';
-        }, 3000);
-      }
-    });
-
-    // Enterキーでフォーム送信
-    document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        document.getElementById('authForm').dispatchEvent(new Event('submit'));
-      }
-    });
-  </script>
-
-</body>
-</html>
+        document.getElementById('passwordScreen').classList.add('hidden');
+        document.getElementById('mainContainer').classList.ad
