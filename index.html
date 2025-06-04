@@ -819,7 +819,7 @@
 
   <script>
     // パスワード設定（実際の運用では、より安全な方法を使用してください）
-    const correctPassword = "daito-molkky";
+    const correctPassword = "molkky-ob";
 
     // パスワードチェック関数
     function checkPassword() {
@@ -829,4 +829,80 @@
       if (inputPassword === correctPassword) {
         // パスワードが正しい場合
         document.getElementById('passwordScreen').classList.add('hidden');
-        document.getElementById('mainContainer').classList.ad
+        document.getElementById('mainContainer').classList.add('visible');
+        
+        // ローディング画面を表示
+        setTimeout(() => {
+          document.getElementById('loadingScreen').classList.remove('hidden');
+          
+          // 3秒後にローディング画面を非表示
+          setTimeout(() => {
+            document.getElementById('loadingScreen').classList.add('hidden');
+            
+            // ローディング画面が完全に消えたら要素を削除
+            setTimeout(() => {
+              document.getElementById('loadingScreen').remove();
+            }, 500);
+          }, 3000);
+        }, 500);
+        
+      } else {
+        // パスワードが間違っている場合
+        errorElement.style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
+        
+        // エラーメッセージを3秒後に非表示
+        setTimeout(() => {
+          errorElement.style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    // Enterキーでパスワードチェック
+    function handlePasswordKeyPress(event) {
+      if (event.key === 'Enter') {
+        checkPassword();
+      }
+    }
+
+    // ページ読み込み時にパスワード入力欄にフォーカス
+    window.addEventListener('load', function() {
+      document.getElementById('passwordInput').focus();
+    });
+
+    // 画像の遅延読み込み完了を待つ
+    document.addEventListener('DOMContentLoaded', function() {
+      const images = document.querySelectorAll('img');
+      let loadedImages = 0;
+      
+      if (images.length === 0) return;
+      
+      images.forEach(function(img) {
+        if (img.complete) {
+          loadedImages++;
+        } else {
+          img.addEventListener('load', function() {
+            loadedImages++;
+            checkAllImagesLoaded();
+          });
+          img.addEventListener('error', function() {
+            loadedImages++;
+            checkAllImagesLoaded();
+          });
+        }
+      });
+      
+      function checkAllImagesLoaded() {
+        if (loadedImages === images.length) {
+          // 全ての画像が読み込まれた後でも、3秒は表示し続ける
+          // 画像読み込み完了による早期終了は行わない
+        }
+      }
+      
+      // 初期チェック
+      checkAllImagesLoaded();
+    });
+  </script>
+</body>
+</html>
